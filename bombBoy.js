@@ -103,9 +103,10 @@ Player.prototype.draw = function () {
         }
     }
     
+    outer:
     if (MAP_BLOCK[player.getMapY()][player.getMapX()] === 'f' && player.status === '0') {
         player.stopCount = 0;
-                
+
         for (fs = 0; fs < fireStockExpTime.length; fs += 1) {
             
             if (player.getMapX() === fireStockPosX[fs] && player.getMapY() === fireStockPosY[fs]) {
@@ -115,6 +116,7 @@ Player.prototype.draw = function () {
                 } else {
                     player.status = 'ws';
                 }
+                break outer;
             }
         }
     }
