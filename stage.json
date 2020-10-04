@@ -1,0 +1,44 @@
+{
+  "stage" : [
+      {
+          "code" : "1-1",
+          "name" : "testMap",
+          "bomb" : 3,
+          "firePower" : 4,
+          "speed" : 5,
+          "bestTime" : "00:00:02.xx",
+          "normalTime" : "00:00:03.xx",
+          "map" : [
+                "hhhhhhhhhh",
+                "h0000g000h",
+                "h00000000h",
+                "h00000000h",
+                "h00000000h",
+                "h00000000h",
+                "h00000000h",
+                "h00000000h",
+                "h00000000h",
+                "h00001000h",
+                "hhhhhhhhhh"
+          ]
+      },
+      {
+          "code" : "1-2",
+          "name" : "tutorial",
+          "bomb" : 3,
+          "firePower" : 4,
+          "speed" : 5,
+          "bestTime" : "00:00:05.xx",
+          "normalTime" : "00:00:07.xx",
+          "map" : [
+                "hhhhhghhhh",
+                "hhhhhshhhh",
+                "hhhhhshhhh",
+                "h00000000h",
+                "h00001000h",
+                "h00000000h",
+                "hhhhhhhhhh"
+          ]
+      }
+  ]
+}

@@ -1,0 +1,194 @@
+# ABOUT
+
+# TASK
+A MAP
+ - ARRAY DISP ok
+ - READ TEXT FIFE ok
+ 
+A BOY MOVE ok 2020/09/24
+A BOM PUT
+ - AREA 2020/09/24 ok
+ - DISP 2020/09/24 ok
+
+'A BOY MOVE
+ - WALL JUGGE ok 2020/09/24
+ - BOM JUGGE ok  2020/09/24
+ 
+'B BOM PUT ok 2020/09/24
+ - BOM JUGGE ok 2020/09/24
+
+A BOM EXPLOSION
+
+ - DISP
+ 
+   - frame check
+   
+     60frame /1sec
+     1frame = 1/60sec = 0,016666666...
+             16milisec
+   
+     1/x = 0.016 =
+       1 = 0.016x 
+       1/0.016  = x = 62.5fps
+
+     https://bombergirl.gamerch.com/%E3%83%9C%E3%83%A0%E3%81%AE%E3%83%80%E3%83%A1%E3%83%BC%E3%82%B8%E8%A8%88%E7%AE%97%E6%96%B9%E6%B3%95
+     BOM EXP 140frame(60fps)
+        1/60 * 140 / (1/62.5) 
+        = *145.83333...
+        = *145 frame(62.5fps)
+        
+     
+     BLAST KEEP 30frame(60fps)
+        1/60 * 30 / (1/62.5)
+        = *31.25
+        = *31 frame(62.5fps)
+        
+     BOM EXP -> 145 frame 
+     BOM BLAST KEEP -> 145`176
+     BOM ERACE -> 177
+   
+   - bom:count countMax -> EXP
+     count -> bomput start
+   
+   - bom exp -> MAP_BLOCK[bom.x][bom.y] = fire ok 2020/09/25
+
+                MAP_BLOCK[bom.x + firePow] [bom.y] = fire
+                MAP_BLOCK[bom.x - firePow] [bom.y] = fire
+                
+                MAP_BLOCK[bom.x] [bom.y + firePow] = fire
+                MAP_BLOCK[bom.x] [bom.y - firePow] = fire
+                
+                
+   '- bom Erace ok 2020/09/25
+   '- HARD BL HIT ok 2020/09/25
+
+   '- SOFT BLOCK HIT 2020/09/25 ok
+   
+   '- MULTI BOM
+      '- TIME ADDMIN 2020/09/26 ok
+      '- IGNITE THE NEXT FIRE ok 2020/09/27
+         0.0662sec, 0.06444sec,0.0668sec
+         0.0662 / (1/60) = 3.972  frame
+         0.6444 / (1/60) = 3.8664 frame 
+          4 frame (1/60 * 4 = 0.066666666..sec)
+        
+        62.5fps
+         (1/60) * 4 /(1/62.5) = 4.1666666666.frame
+        =*4 frame*
+        
+       BOM CLASS
+       -COUNT
+       -FIRE POW
+       -(POS X Y)
+        NEW -> BOM PUT(COUNT=0,FIREPOW=PLAYER.FIREPOW,POX=PLAYER)
+        ERACE -> BOM EXP(COUNT MAX)
+   
+      '- BOM EXP FIRE TRIGGER ok 2020/09/27
+      '- BOM OVERLAPPING ok 2020/09/27
+      '- BOM QUANTITY MAX 3 ok 2020/09/27
+      
+B PLAYER MOVE UPGRADE
+       - Simultaneous push ok 2020/09/28
+       - Long press ok 2020/09/28
+       - speed status 
+         2: 3.00/1sec
+         3: 3.25/1sec
+         4: 3.50/1sec
+         5: 3.75/1sec
+         6: 4.00/1sec
+         7: 4.25/1sec
+        
+          60frame = 1mas
+          1frame = 1/60mas
+                 = 0.016666..
+                 
+          62.5frame = 70
+          70/62.5 = 1.12
+          1frame = 1.12
+          
+          speed:2
+          1sec = 3.00mas
+          1sec = 210
+          1frame = 3.36
+          
+          speed:3
+          1sec = 3.25mas
+          1sec = 227.5
+          1frame = 3.64
+          
+          speed:4
+          1sec = 3.5mas
+          1sec = 245
+          1frame = 3.92
+          
+          1speed:0,28
+          speed:5
+          1frame = 4.2
+          
+B GIZI BOM  ok 2020/09/28
+
+B PLAYER HIT ok 2020/09/29
+  near 2.53sec stop
+     2.53 / 1/62.5 = 158.125 frame = 158frame
+ 
+  far bom 1.26sec stop
+     1.26 / 1/62.5 = 78.75 frame = 79frame
+
+B BOM MOVE ok 2020/09/30
+         1        2      3       4         5
+ big -> small -> big -> small -> big -> small = EXP!!
+         29       58     87       116     145   
+ 1.2,3,4,5 =  145/5 = 29
+ 
+ 0`29 min -
+ 30`58 big +
+ 
+  SMALL_SIZE = BLOCK_SIZE / 2
+  SMALL = 29 FRAME = BLOCK_SEZE / 2
+          1 FRAME = BLOCK_SIZE / 2 / 29
+
+A RANGE EROOR ok 2020/10/01
+
+B TIME ADMIN ok 2020/10/04
+
+B STATUS
+  INIT -> MAP SHOW -> GAME START -> END
+             
+B TIME SAVE 
+  LOCALSTRAGE ok 2020/10/05
+    STAGECODE,TIME
+  BEST TIME UPDATE ... ok 2020/10/05
+
+# NEXT
+B CPU BATTLE
+C NEW CHARACTER
+C NEW SKILL
+  C BLOCK PUT
+  
+
+# SETTING
+## BOMMER
+- FirePower
+- Speed
+- Bomb
+
+## MAP
+
+### OBJECT
+
+#### BLOCK
+- HardBlock 
+- SoftBlock 
+- GoalArea  
+- StartArea 
+- None
+
+#### BOMB
+A Norma ok l
+C Screw
+C Lightning
+
+####
+
+# ORIGINAL
+https://p.eagate.573.jp/game/bombergirl/bg/p/index.html

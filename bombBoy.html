@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>BOMB BOY</title>
+        
+        <style>
+            article, aside, dialog, figure, footer, header,
+            hgroup, menu, nav, section { display: block; }
+            body {
+                margin: 20px;
+                padding: 20px;
+            }
+            #stageNavi {
+                float: left;
+                padding: 20px;
+                width: 400px;
+                border: groove;
+            }
+            #main {
+                float: left;
+                padding: 20px;
+                border: groove;
+            }
+            #gameNavi {
+                width: 350px;
+                float: left;
+            }
+            #field {
+                border: groove;
+            }
+        </style>
+    
+    </head>
+    <body>
+        <script type="text/javascript" src="bombBoy.js"></script>
+
+        <h1><LABEL id="lblTitle">BOMB BOY</LABEL></h1>
+    
+        <div id = "stageNavi">
+            <h2>STAGE</h2>
+            <p>Select Stage -> <select id="cmbMap"></select></p>
+            <p>Status(bombs,fire Power,speed) -> <label id="lblStageStatus">none</label></p>
+            <p>Stage Best Time -> <LABEL id="lblStageBestTime"></LABEL></p>
+            <p>Stage Normal Time -> <LABEL id="lblStageNormalTime"></LABEL></p>
+            <p>Your Best Time -> <LABEL id="lblYourBestTime"></LABEL></p>
+            
+            <br>
+            <h2>OPERATION</h2>
+            <ul>
+                <li>MOVE:Arrow key</li>
+                <li>PUT BOMB:Space key</li>
+                <li>START CLICK: s key</li>
+                <li>RESET CLICK: r key</li>
+            </ul>
+            <br>
+            <h2>RULE</h2>
+            <p>Go fast to the green place.</p>
+        </div>
+    
+        <div id = "main">
+            <div id = 'gameNavi'>
+                <p><input type="button" value="START" id="btnStart">
+                    <input type="button" value="RESET" id="btnReset">
+                </p>
+                <p>Game Status -> <LABEL id="lblGameStatus"></LABEL></p>
+                <p>Your Time -> <LABEL id="lblYourTime"></LABEL></p>
+            </div>
+            <canvas id="field" width="770" height="770"></canvas>
+        </div>
+
+    </body>
+</html>
