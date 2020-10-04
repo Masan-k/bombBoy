@@ -2,7 +2,7 @@
   "stage" : [
       {
           "code" : "1-1",
-          "name" : "testMap",
+          "hint" : "testMap",
           "bomb" : 3,
           "firePower" : 4,
           "speed" : 5,
@@ -24,7 +24,7 @@
       },
       {
           "code" : "1-2",
-          "name" : "tutorial",
+          "hint" : "chain explosion",
           "bomb" : 3,
           "firePower" : 4,
           "speed" : 5,
@@ -42,8 +42,8 @@
           ]
       },
       {
-          "code" : "1-3",
-          "name" : "stun and chain explosion",
+          "code" : "1-3-blocker",
+          "hint" : "stun and chain explosion",
           "bomb" : 3,
           "firePower" : 4,
           "speed" : 5,
@@ -56,6 +56,49 @@
                 "hhhhhshhhhh",
                 "hhhhhshhhhh",
                 "hhhhhshhhhh",
+                "h000000000h",
+                "h000010000h",
+                "h000000000h",
+                "hhhhhhhhhhh"
+          ]
+      },
+      {
+          "code" : "1-3-attacker-noSkill",
+          "hint" : "gizi 3",
+          "bomb" : 2,
+          "firePower" : 3,
+          "speed" : 7,
+          "skill" : "none",
+          "normalTime" : "00:00:18.xx",
+          "bestTime" : "00:00:14.xx",
+          "map" : [
+                "hhhhhghhhhh",
+                "hhhhhshhhhh",
+                "hhhhhshhhhh",
+                "hhhhhshhhhh",
+                "hhhhhshhhhh",
+                "hhhhhshhhhh",
+                "h000000000h",
+                "h000010000h",
+                "h000000000h",
+                "hhhhhhhhhhh"
+          ]
+      },
+      {
+          "code" : "1-4-blocker",
+          "hint" : "chain explosion",
+          "bomb" : 3,
+          "firePower" : 4,
+          "speed" : 5,
+          "normalTime" : "00:00:18.xx",
+          "bestTime" : "00:00:11.xx",
+          "map" : [
+                "hhhhhghhhhh",
+                "hhhhssshhhh",
+                "hhhhssshhhh",
+                "hhhhssshhhh",
+                "hhhhssshhhh",
+                "hhhhssshhhh",
                 "h000000000h",
                 "h000010000h",
                 "h000000000h",
