@@ -47,16 +47,18 @@
           "bomb" : 3,
           "firePower" : 4,
           "speed" : 5,
-          "bestTime" : "00:00:0x.xx",
-          "normalTime" : "00:00:0x.xx",
+          "normalTime" : "00:00:18.xx",
+          "bestTime" : "00:00:11.xx",
           "map" : [
                 "hhhhhghhhhh",
                 "hhhhhshhhhh",
                 "hhhhhshhhhh",
                 "hhhhhshhhhh",
                 "hhhhhshhhhh",
+                "hhhhhshhhhh",
                 "h000000000h",
                 "h000010000h",
+                "h000000000h",
                 "hhhhhhhhhhh"
           ]
       }
