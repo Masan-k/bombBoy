@@ -332,22 +332,24 @@ function inputKey() {
 function drawLine() {
     "use strict";
     
-    var i;
-        
-    for (i = 1; i <= 10; i += 1) {
+    var y, x;
+    
+    ctx.lineWidth = '0.1';
+    for (y = 0; y <= MAP_BLOCK.length; y += 1) {
         
         ctx.beginPath();
-    
-        ctx.lineTo(i * BLOCK_SIZE, 0);
-        ctx.lineTo(i * BLOCK_SIZE, 10 * BLOCK_SIZE);
-    
+        ctx.lineTo(0, y * BLOCK_SIZE);
+        ctx.lineTo(MAP_BLOCK[0].length * BLOCK_SIZE, y * BLOCK_SIZE);
         ctx.closePath();
         
         ctx.stroke();
+    }
+    
+    for (x = 0; x <= MAP_BLOCK[0].length; x += 1) {
     
         ctx.beginPath();
-        ctx.lineTo(0, i * BLOCK_SIZE);
-        ctx.lineTo(10 * BLOCK_SIZE, i * BLOCK_SIZE);
+        ctx.lineTo(x * BLOCK_SIZE, 0);
+        ctx.lineTo(x * BLOCK_SIZE, MAP_BLOCK.length * BLOCK_SIZE);
         ctx.closePath();
     
         ctx.stroke();
