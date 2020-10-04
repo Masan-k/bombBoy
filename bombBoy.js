@@ -52,6 +52,7 @@ var canvas,
     lblStageBestTime,
     lblStageNormalTime,
     lblMapText,
+    lblHint,
     
     LOCAL_ST_KEY = 'BOMBOY';
 
@@ -103,10 +104,10 @@ Player.prototype.draw = function () {
         }
     }
     
-    outer:
     if (MAP_BLOCK[player.getMapY()][player.getMapX()] === 'f' && player.status === '0') {
         player.stopCount = 0;
 
+outer:
         for (fs = 0; fs < fireStockExpTime.length; fs += 1) {
             
             if (player.getMapX() === fireStockPosX[fs] && player.getMapY() === fireStockPosY[fs]) {
@@ -212,6 +213,7 @@ function init() {
     lblStageStatus.innerText = 'none';
     lblStageBestTime.innerText = 'none';
     lblStageNormalTime.innerText = 'none';
+    lblHint.innerText = 'none';
     
     lblGameStatus.innerText = 'Waiting for stage selection';
     
@@ -673,6 +675,7 @@ function setStageData() {
 
             lblStageBestTime.innerText = jsonObj.stage[i].bestTime;
             lblStageNormalTime.innerText = jsonObj.stage[i].normalTime;
+            lblHint.innerText = jsonObj.stage[i].hint;
         }
     }
 }
@@ -858,7 +861,7 @@ window.onload = function () {
     lblStageBestTime = document.getElementById("lblStageBestTime");
     lblStageNormalTime = document.getElementById("lblStageNormalTime");
     lblMapText = document.getElementById("lblMapText");
-
+    lblHint = document.getElementById("lblHint");
     
     btnStart = document.getElementById("btnStart");
     btnStart.addEventListener("click", clickStart, false);
