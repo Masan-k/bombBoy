@@ -51,6 +51,7 @@ var canvas,
     lblStageStatus,
     lblStageBestTime,
     lblStageNormalTime,
+    lblMapText,
     
     LOCAL_ST_KEY = 'BOMBOY';
 
@@ -180,6 +181,7 @@ function initStageVariable() {
     "use strict";
     isStart = false;
     lblYourTime.innerText = 'none';
+    lblMapText.innerText = 'none';
     
     isMoveUp = false;
     isMoveDown = false;
@@ -200,7 +202,6 @@ function initStageVariable() {
     fireStockPosX = [];
     fireStockPosY = [];
     fireStockPow = [];
-    
     
 }
 function init() {
@@ -673,6 +674,19 @@ function setStageData() {
         }
     }
 }
+function setMapText() {
+    "use strict";
+    var mapText, mapRowText, y, x;
+    mapText = "";
+    for (y = 0; y < MAP_BLOCK.length; y += 1) {
+        mapRowText = "";
+        for (x = 0; x < MAP_BLOCK[y].length; x += 1) {
+            mapRowText += MAP_BLOCK[y][x];
+        }
+        mapText += mapRowText + "\n";
+    }
+    lblMapText.innerText = mapText;
+}
 
 function setMapBlock() {
     "use strict";
@@ -723,11 +737,11 @@ function changeStage() {
         initStageVariable();
         
         setUserTime();
+        setMapText();
         
         btnStart.disabled = false;
         btnStart.focus();
         lblGameStatus.innerText = 'Waiting for start';
-        
         
     }
 }
@@ -819,7 +833,7 @@ function inputKeyDown() {
         isMoveDown = true;
         event.preventDefault();
     }
-    if (event.keyCode === KEY_CODE_SPACE) {
+    if (event.keyCode === KEY_CODE_SPACE && player.status === '0') {
         isBombPut = true;
         event.preventDefault();
     }
@@ -841,6 +855,7 @@ window.onload = function () {
     lblStageStatus = document.getElementById("lblStageStatus");
     lblStageBestTime = document.getElementById("lblStageBestTime");
     lblStageNormalTime = document.getElementById("lblStageNormalTime");
+    lblMapText = document.getElementById("lblMapText");
 
     
     btnStart = document.getElementById("btnStart");
@@ -854,8 +869,6 @@ window.onload = function () {
     lblYourBestTime = document.getElementById("lblYourBestTime");
     lblYourTime = document.getElementById("lblYourTime");
 
-
-    
     loadFile();
 
     gameStatus = 'init';
