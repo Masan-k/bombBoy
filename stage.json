@@ -40,6 +40,25 @@
                 "h000000000h",
                 "hhhhhhhhhhh"
           ]
+      },
+      {
+          "code" : "1-3",
+          "name" : "stun and chain explosion",
+          "bomb" : 3,
+          "firePower" : 4,
+          "speed" : 5,
+          "bestTime" : "00:00:0x.xx",
+          "normalTime" : "00:00:0x.xx",
+          "map" : [
+                "hhhhhghhhhh",
+                "hhhhhshhhhh",
+                "hhhhhshhhhh",
+                "hhhhhshhhhh",
+                "hhhhhshhhhh",
+                "h000000000h",
+                "h000010000h",
+                "hhhhhhhhhhh"
+          ]
       }
   ]
 }
