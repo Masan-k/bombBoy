@@ -228,7 +228,7 @@ function init() {
 function loadFile() {
     "use strict";
 
-    var requestURL = 'https://masan-k.github.io/test/stage.json',
+    var requestURL = 'https://masan-k.github.io/bombBoy/stage.json',
         request = new XMLHttpRequest();
     request.open('GET', requestURL);
     request.responseType = 'json';
