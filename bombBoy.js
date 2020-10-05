@@ -91,6 +91,32 @@ Player.prototype.getMapY = function () {
 Player.prototype.draw = function () {
     "use strict";
     
+    switch (player.status) {
+    case 'ss':
+        ctx.fillStyle = 'rgb(255,0,0)';
+        player.stopCount += 1;
+        break;
+        
+    case 'ws':
+        ctx.fillStyle = 'rgb(255,0,255)';
+        player.stopCount += 1;
+        break;
+            
+    case '0':
+        ctx.fillStyle = 'rgb(234, 182, 156)';
+        break;
+    case 'g':
+        ctx.fillStyle = 'rgb(255, 255, 0)';
+        break;
+                
+    }
+    
+    ctx.fillRect(player.x - player.width / 2, player.y - player.height / 2, player.width, player.height);
+};
+
+Player.prototype.set = function () {
+    "use strict";
+    
     var fs,
         status = [],
         firePow = [],
@@ -127,6 +153,7 @@ Player.prototype.draw = function () {
         }
         
         for (r = 0; r < firePow.length; r += 1) {
+            
             if (firePow[r] < minFirePow) {
                 minFirePow = firePow[r];
                 minStatus = status[r];
@@ -134,28 +161,6 @@ Player.prototype.draw = function () {
         }
         player.status = minStatus;
     }
-        
-    switch (player.status) {
-    case 'ss':
-        ctx.fillStyle = 'rgb(255,0,0)';
-        player.stopCount += 1;
-        break;
-        
-    case 'ws':
-        ctx.fillStyle = 'rgb(255,0,255)';
-        player.stopCount += 1;
-        break;
-            
-    case '0':
-        ctx.fillStyle = 'rgb(234, 182, 156)';
-        break;
-    case 'g':
-        ctx.fillStyle = 'rgb(255, 255, 0)';
-        break;
-                
-    }
-    
-    ctx.fillRect(player.x - player.width / 2, player.y - player.height / 2, player.width, player.height);
 };
 Player.prototype.getMoveWidth = function () {
     "use strict";
@@ -615,6 +620,8 @@ function main() {
             }
         }
 
+        player.set();
+        
         for (b = 0; b < bombsTimeCount.length; b += 1) {
             if (MAP_BLOCK[bombsPosY[b]][bombsPosX[b]] === 'f') {
                 setFire(b);
@@ -686,6 +693,7 @@ function main() {
                 setBestTime();
             }
         }
+        
         player.draw();
         drawLine();
     }
