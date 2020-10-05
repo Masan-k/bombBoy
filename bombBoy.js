@@ -22,7 +22,7 @@ var canvas,
     fireStockExpTime,
     fireStockPosX,
     fireStockPosY,
-    fireStockPow,
+    fireStockFirePow,
     fireStockDirection,
     
     baseCount,
@@ -75,7 +75,6 @@ var Player = function (x, y, bombs, firePower, speed) {
     
     this.status = '0';
     this.stopCount = '0';
-    this.receiveFirePow = '0';
 };
 
 
@@ -118,12 +117,12 @@ Player.prototype.draw = function () {
             
             if (player.getMapX() === fireStockPosX[fs] && player.getMapY() === fireStockPosY[fs]) {
                 
-                if (player.receiveFirePow === 0 || player.receiveFirePow === 1) {
+                if (fireStockFirePow[fs] === 0 || fireStockFirePow[fs] === 1) {
                     status.push('ss');
                 } else {
                     status.push('ws');
                 }
-                firePow.push(fireStockPow[fs]);
+                firePow.push(fireStockFirePow[fs]);
             }
         }
         
@@ -133,8 +132,6 @@ Player.prototype.draw = function () {
                 minStatus = status[r];
             }
         }
-        
-        player.receiveFirePow = minFirePow;
         player.status = minStatus;
     }
         
@@ -221,7 +218,7 @@ function initStageVariable() {
     fireStockExpTime = [];
     fireStockPosX = [];
     fireStockPosY = [];
-    fireStockPow = [];
+    fireStockFirePow = [];
     fireStockDirection = [];
     
 }
@@ -446,7 +443,7 @@ function setFireStock(y, x, fireMode, bomNum, isStopFire, fireNum) {
             fireStockExpTime.push(baseCount + fireNum * 4);
             fireStockPosX.push(x);
             fireStockPosY.push(y);
-            fireStockPow.push(fireNum);
+            fireStockFirePow.push(fireNum);
             fireStockDirection.push(fireMode);
         }
         
@@ -477,7 +474,7 @@ function setFireStock(y, x, fireMode, bomNum, isStopFire, fireNum) {
         fireStockExpTime.push(baseCount + fireNum * 4);
         fireStockPosX.push(x);
         fireStockPosY.push(y);
-        fireStockPow.push(fireNum);
+        fireStockFirePow.push(fireNum);
         fireStockDirection.push(fireMode);
     }
     
@@ -491,7 +488,7 @@ function setFire(bomNum) {
         fireStockExpTime.push(baseCount);
         fireStockPosX.push(bombsPosX[bomNum]);
         fireStockPosY.push(bombsPosY[bomNum]);
-        fireStockPow.push(0);
+        fireStockFirePow.push(0);
         fireStockDirection.push(FIRE_NONE);
         
         setFireStock(bombsPosY[bomNum], bombsPosX[bomNum] + f, FIRE_RIGHT, bomNum, bomsStopFireR[bomNum], f);
@@ -634,7 +631,7 @@ function main() {
                     fireStockExpTime.splice(fs, 1);
                     fireStockPosX.splice(fs, 1);
                     fireStockPosY.splice(fs, 1);
-                    fireStockPow.splice(fs, 1);
+                    fireStockFirePow.splice(fs, 1);
                     fireStockDirection.splice(fs, 1);
                     
                     fireClearTime.splice(c, 1);
