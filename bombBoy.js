@@ -8,6 +8,8 @@ var canvas,
     FIRE_DOWN = '1',
     FIRE_RIGHT = '2',
     FIRE_LEFT = '3',
+    FIRE_NONE = '9',
+    
     bomsStopFireR,
     bomsStopFireL,
     bomsStopFireU,
@@ -21,6 +23,7 @@ var canvas,
     fireStockPosX,
     fireStockPosY,
     fireStockPow,
+    fireStockDirection,
     
     baseCount,
     isMoveUp = false,
@@ -51,7 +54,6 @@ var canvas,
     lblStageStatus,
     lblStageBestTime,
     lblStageNormalTime,
-    lblMapText,
     lblHint,
     
     LOCAL_ST_KEY = 'BOMBOY';
@@ -183,9 +185,10 @@ function clearCanvas() {
 function initStageVariable() {
     "use strict";
     isStart = false;
-    lblYourTime.innerText = 'none';
-    lblMapText.innerText = 'none';
     
+    lblYourBestTime.innerText = 'none';
+    lblYourTime.innerText = '00:00:00.00';
+
     isMoveUp = false;
     isMoveDown = false;
     isMoveLeft = false;
@@ -205,6 +208,7 @@ function initStageVariable() {
     fireStockPosX = [];
     fireStockPosY = [];
     fireStockPow = [];
+    fireStockDirection = [];
     
 }
 function init() {
@@ -216,12 +220,8 @@ function init() {
     lblHint.innerText = 'none';
     
     lblGameStatus.innerText = 'Waiting for stage selection';
-    
-    lblYourBestTime.innerText = 'none';
-    lblYourTime.innerText = 'none';
-    
+        
     cmbMap.options[0].selected = true;
-    
     btnStart.disabled = true;
     
     MAP_BLOCK = null;
@@ -303,7 +303,7 @@ function inputKey() {
         if (MAP_BLOCK[player.getMapY()][player.getMapX()] !== 'b' && player.bombs > bombsTimeCount.length) {
             
             if (MAP_BLOCK[player.getMapY()][player.getMapX()] === 'f') {
-                MAP_BLOCK[player.getMapY()][player.getMapX()] = 'fb';
+                MAP_BLOCK[player.getMapY()][player.getMapX()] = 'bf';
             } else {
                 MAP_BLOCK[player.getMapY()][player.getMapX()] = 'b';
             }
@@ -366,7 +366,6 @@ function drawLine() {
 function clearBombs(bomNum) {
     'use strict';
     
-    
     bombsTimeCount.splice(bomNum, 1);
     bombsFirePow.splice(bomNum, 1);
     bombsPosX.splice(bomNum, 1);
@@ -425,32 +424,33 @@ function drawBom(y, x) {
 function setFireStock(y, x, fireMode, bomNum, isStopFire, fireNum) {
     "use strict";
     
-    if (x < 0 || x >= MAP_BLOCK[0].length  || y < 0 || y >= MAP_BLOCK.length) {
-        return false;
-    }
-    if (MAP_BLOCK[y][x] === 'h' || MAP_BLOCK[y][x] === 's' || MAP_BLOCK[y][x] === 'g') {
+    if (x < 0 || x >= MAP_BLOCK[0].length  || y < 0 || y >= MAP_BLOCK.length) { return false; }
+    
+    if (MAP_BLOCK[y][x] === 'h' || MAP_BLOCK[y][x] === 's' || MAP_BLOCK[y][x] === 'g' || MAP_BLOCK[y][x] === 'sfd' || MAP_BLOCK[y][x] === 'sfu' || MAP_BLOCK[y][x] === 'sfl' || MAP_BLOCK[y][x] === 'sfr') {
 
-        if (MAP_BLOCK[y][x] === 's' && isStopFire === false) {
+        if ((MAP_BLOCK[y][x] === 's' || MAP_BLOCK[y][x] === 'sfd' || MAP_BLOCK[y][x] === 'sfu' || MAP_BLOCK[y][x] === 'sfl' || MAP_BLOCK[y][x] === 'sfr') && isStopFire === false) {
             fireStockExpTime.push(baseCount + fireNum * 4);
             fireStockPosX.push(x);
             fireStockPosY.push(y);
             fireStockPow.push(fireNum);
+            fireStockDirection.push(fireMode);
         }
+        
         switch (fireMode) {
         case FIRE_DOWN:
-            bomsStopFireD[bomNum] = true;
+            if (MAP_BLOCK[y][x] === 's' || MAP_BLOCK[y][x] === 'sfd' || MAP_BLOCK[y][x] === 'h') { bomsStopFireD[bomNum] = true; }
             break;
         
         case FIRE_UP:
-            bomsStopFireU[bomNum] = true;
+            if (MAP_BLOCK[y][x] === 's' || MAP_BLOCK[y][x] === 'sfu' || MAP_BLOCK[y][x] === 'h') { bomsStopFireU[bomNum] = true; }
             break;
                 
         case FIRE_LEFT:
-            bomsStopFireL[bomNum] = true;
+            if (MAP_BLOCK[y][x] === 's' || MAP_BLOCK[y][x] === 'sfl' || MAP_BLOCK[y][x] === 'h') { bomsStopFireL[bomNum] = true; }
             break;
             
         case FIRE_RIGHT:
-            bomsStopFireR[bomNum] = true;
+            if (MAP_BLOCK[y][x] === 's' || MAP_BLOCK[y][x] === 'sfr' || MAP_BLOCK[y][x] === 'h') { bomsStopFireR[bomNum] = true; }
             break;
                 
         default:
@@ -464,7 +464,9 @@ function setFireStock(y, x, fireMode, bomNum, isStopFire, fireNum) {
         fireStockPosX.push(x);
         fireStockPosY.push(y);
         fireStockPow.push(fireNum);
+        fireStockDirection.push(fireMode);
     }
+    
 }
 
 function setFire(bomNum) {
@@ -476,6 +478,7 @@ function setFire(bomNum) {
         fireStockPosX.push(bombsPosX[bomNum]);
         fireStockPosY.push(bombsPosY[bomNum]);
         fireStockPow.push(0);
+        fireStockDirection.push(FIRE_NONE);
         
         setFireStock(bombsPosY[bomNum], bombsPosX[bomNum] + f, FIRE_RIGHT, bomNum, bomsStopFireR[bomNum], f);
         setFireStock(bombsPosY[bomNum], bombsPosX[bomNum] - f, FIRE_LEFT, bomNum, bomsStopFireL[bomNum], f);
@@ -535,16 +538,18 @@ function main() {
                     ctx.fillStyle = 'rgb(255, 0, 0)';
                     ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     break;
-                        
-                case 'b':
-                    break;
-                
-                case 'f':
-                    break;
-                        
+
                 case '0':
                     ctx.fillStyle = 'rgb(255, 255, 255)';
                     ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                    break;
+
+                case 'sfu':
+                case 'sfd':
+                case 'sfr':
+                case 'sfl':
+                case 'b':
+                case 'f':
                     break;
                         
                 default:
@@ -557,14 +562,35 @@ function main() {
         
         for (b = 0; b < bombsTimeCount.length; b += 1) {
             bombsTimeCount[b] += 1;
-            if (bombsTimeCount[b] === TIME_BOM_EXP || MAP_BLOCK[bombsPosY[b]][bombsPosX[b]] === 'fb') {
+            if (bombsTimeCount[b] === TIME_BOM_EXP || MAP_BLOCK[bombsPosY[b]][bombsPosX[b]] === 'bf') {
                 setFire(b);
             }
         }
         
         for (fs = 0; fs < fireStockExpTime.length; fs += 1) {
             if (baseCount === fireStockExpTime[fs]) {
-                MAP_BLOCK[fireStockPosY[fs]][fireStockPosX[fs]] = 'f';
+                if (MAP_BLOCK[fireStockPosY[fs]][fireStockPosX[fs]] === 's') {
+                    switch (fireStockDirection[fs]) {
+                    case FIRE_DOWN:
+                        MAP_BLOCK[fireStockPosY[fs]][fireStockPosX[fs]] = 'sfd';
+                        break;
+                            
+                    case FIRE_UP:
+                        MAP_BLOCK[fireStockPosY[fs]][fireStockPosX[fs]] = 'sfu';
+                        break;
+                            
+                    case FIRE_LEFT:
+                        MAP_BLOCK[fireStockPosY[fs]][fireStockPosX[fs]] = 'sfl';
+                        break;
+
+                    case FIRE_RIGHT:
+                        MAP_BLOCK[fireStockPosY[fs]][fireStockPosX[fs]] = 'sfr';
+                        break;
+                    }
+                    
+                } else {
+                    MAP_BLOCK[fireStockPosY[fs]][fireStockPosX[fs]] = 'f';
+                }
 
             }
             
@@ -577,8 +603,6 @@ function main() {
                 fireClearPosY.push(fireStockPosY[fs]);
             }
         }
-        
-        
 
         for (b = 0; b < bombsTimeCount.length; b += 1) {
             if (MAP_BLOCK[bombsPosY[b]][bombsPosX[b]] === 'f') {
@@ -597,6 +621,7 @@ function main() {
                     fireStockPosX.splice(fs, 1);
                     fireStockPosY.splice(fs, 1);
                     fireStockPow.splice(fs, 1);
+                    fireStockDirection.splice(fs, 1);
                     
                     fireClearTime.splice(c, 1);
                     fireClearPosX.splice(c, 1);
@@ -611,13 +636,13 @@ function main() {
                     drawBom(y, x);
                 }
                 
-                if (MAP_BLOCK[y][x] === 'f') {
+                if (MAP_BLOCK[y][x] === 'f' || MAP_BLOCK[y][x] === 'sfd' || MAP_BLOCK[y][x] === 'sfu' || MAP_BLOCK[y][x] === 'sfl' || MAP_BLOCK[y][x] === 'sfr') {
                     ctx.fillStyle = 'rgb(0, 255, 255)';
                     ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                 }
             }
         }
-        
+    
         if (MAP_BLOCK[player.getMapY()][player.getMapX()] === 'g') {
             
             player.status = 'g';
@@ -683,19 +708,6 @@ function setStageData() {
         }
     }
 }
-function setMapText() {
-    "use strict";
-    var mapText, mapRowText, y, x;
-    mapText = "";
-    for (y = 0; y < MAP_BLOCK.length; y += 1) {
-        mapRowText = "";
-        for (x = 0; x < MAP_BLOCK[y].length; x += 1) {
-            mapRowText += MAP_BLOCK[y][x];
-        }
-        mapText += mapRowText + "\n";
-    }
-    lblMapText.innerText = mapText;
-}
 
 function setMapBlock() {
     "use strict";
@@ -746,7 +758,6 @@ function changeStage() {
         initStageVariable();
         
         setUserTime();
-        setMapText();
         
         btnStart.disabled = false;
         btnStart.focus();
@@ -864,7 +875,6 @@ window.onload = function () {
     lblStageStatus = document.getElementById("lblStageStatus");
     lblStageBestTime = document.getElementById("lblStageBestTime");
     lblStageNormalTime = document.getElementById("lblStageNormalTime");
-    lblMapText = document.getElementById("lblMapText");
     lblHint = document.getElementById("lblHint");
     
     btnStart = document.getElementById("btnStart");
