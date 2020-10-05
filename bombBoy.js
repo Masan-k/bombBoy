@@ -363,18 +363,19 @@ function drawLine() {
 
 }
 
-function clearBombs() {
+function clearBombs(bomNum) {
     'use strict';
-
-    bombsTimeCount.shift();
-    bombsFirePow.shift();
-    bombsPosX.shift();
-    bombsPosY.shift();
     
-    bomsStopFireR.shift();
-    bomsStopFireL.shift();
-    bomsStopFireU.shift();
-    bomsStopFireD.shift();
+    
+    bombsTimeCount.splice(bomNum, 1);
+    bombsFirePow.splice(bomNum, 1);
+    bombsPosX.splice(bomNum, 1);
+    bombsPosY.splice(bomNum, 1);
+    
+    bomsStopFireR.splice(bomNum, 1);
+    bomsStopFireL.splice(bomNum, 1);
+    bomsStopFireU.splice(bomNum, 1);
+    bomsStopFireD.splice(bomNum, 1);
     
 }
 
@@ -453,7 +454,9 @@ function setFireStock(y, x, fireMode, bomNum, isStopFire, fireNum) {
             break;
                 
         default:
-            console.log("fire mode error02");
+            gameStatus = 'end';
+            lblGameStatus.innerText = 'FIRE MODE ERROR';
+            throw 'FIRE MODE LOAD ERROR!';
         }
         
     } else if (isStopFire === false) {
@@ -480,7 +483,7 @@ function setFire(bomNum) {
         setFireStock(bombsPosY[bomNum] - f, bombsPosX[bomNum], FIRE_UP, bomNum, bomsStopFireU[bomNum], f);
     }
 
-    clearBombs();
+    clearBombs(bomNum);
 }
 function setBestTime() {
     'use strict';
@@ -545,7 +548,6 @@ function main() {
                     break;
                         
                 default:
-                    console.log("x : " + x + "y : " + y + "MAP_BLOCK : " + MAP_BLOCK[y][x]);
                     gameStatus = 'end';
                     lblGameStatus.innerText = 'MAP LOAD ERROR';
                     throw 'MAP_BLOCK LOAD ERROR!';
@@ -556,8 +558,6 @@ function main() {
         for (b = 0; b < bombsTimeCount.length; b += 1) {
             bombsTimeCount[b] += 1;
             if (bombsTimeCount[b] === TIME_BOM_EXP || MAP_BLOCK[bombsPosY[b]][bombsPosX[b]] === 'fb') {
-
-                MAP_BLOCK[bombsPosY[b]][bombsPosX[b]] = 'f';
                 setFire(b);
             }
         }
@@ -565,9 +565,11 @@ function main() {
         for (fs = 0; fs < fireStockExpTime.length; fs += 1) {
             if (baseCount === fireStockExpTime[fs]) {
                 MAP_BLOCK[fireStockPosY[fs]][fireStockPosX[fs]] = 'f';
+
             }
             
             if (baseCount === fireStockExpTime[fs] + (TIME_BOM_ERACE - TIME_BOM_EXP) - 1) {
+                
                 MAP_BLOCK[fireStockPosY[fs]][fireStockPosX[fs]] = '0';
                 
                 fireClearTime.push(fireStockExpTime[fs]);
@@ -575,6 +577,8 @@ function main() {
                 fireClearPosY.push(fireStockPosY[fs]);
             }
         }
+        
+        
 
         for (b = 0; b < bombsTimeCount.length; b += 1) {
             if (MAP_BLOCK[bombsPosY[b]][bombsPosX[b]] === 'f') {
@@ -878,5 +882,6 @@ window.onload = function () {
 
     gameStatus = 'init';
     setInterval(main, 16);
+    //setInterval(main, 100);
     
 };
