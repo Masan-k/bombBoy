@@ -75,7 +75,7 @@ var Player = function (x, y, bombs, firePower, speed) {
     
     this.status = '0';
     this.stopCount = '0';
-    this.receiveFire = '0';
+    this.receiveFirePow = '0';
 };
 
 
@@ -92,7 +92,12 @@ Player.prototype.getMapY = function () {
 Player.prototype.draw = function () {
     "use strict";
     
-    var fs;
+    var fs,
+        status = [],
+        firePow = [],
+        r,
+        minFirePow = 99,
+        minStatus;
 
     if (player.status === 'ss') {
         if (player.stopCount === TIME_PL_STOP * 2) {
@@ -109,19 +114,28 @@ Player.prototype.draw = function () {
     if (MAP_BLOCK[player.getMapY()][player.getMapX()] === 'f' && player.status === '0') {
         player.stopCount = 0;
 
-outer:
         for (fs = 0; fs < fireStockExpTime.length; fs += 1) {
             
             if (player.getMapX() === fireStockPosX[fs] && player.getMapY() === fireStockPosY[fs]) {
-                player.receiveFire = fireStockPow[fs];
-                if (player.receiveFire === 0 || player.receiveFire === 1) {
-                    player.status = 'ss';
+                
+                if (player.receiveFirePow === 0 || player.receiveFirePow === 1) {
+                    status.push('ss');
                 } else {
-                    player.status = 'ws';
+                    status.push('ws');
                 }
-                break outer;
+                firePow.push(fireStockPow[fs]);
             }
         }
+        
+        for (r = 0; r < firePow.length; r += 1) {
+            if (firePow[r] < minFirePow) {
+                minFirePow = firePow[r];
+                minStatus = status[r];
+            }
+        }
+        
+        player.receiveFirePow = minFirePow;
+        player.status = minStatus;
     }
         
     switch (player.status) {
@@ -773,8 +787,7 @@ function showTime() {
         minute,
         nowDate,
         hour,
-        stopWatchTime,
-        lblYourTime;
+        stopWatchTime;
 
     if (isStart === true) {
         
