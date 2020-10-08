@@ -131,6 +131,28 @@
                 "h000000000h",
                 "hhhhhhhhhhh"
           ]
+      },
+      {
+          "code" : "1-5-oren",
+          "hint" : "key f -> skill",
+          "bomb" : 2,
+          "firePower" : 3,
+          "speed" : 7,
+          "playerName" : "oren",
+          "normalTime" : "00:00:27.xx",
+          "bestTime" : "00:00:24.xx",
+          "map" : [
+                "hhhhsghhhhh",
+                "hhhhshhhhhh",
+                "hhhhssshhhh",
+                "hhhhhshhhhh",
+                "hhhhssshhhh",
+                "hhhhshhhhhh",
+                "h000000000h",
+                "h000010000h",
+                "h000000000h",
+                "hhhhhhhhhhh"
+          ]
       }
   ]
 }

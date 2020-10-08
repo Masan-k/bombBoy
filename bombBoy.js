@@ -43,7 +43,8 @@ var canvas,
     TIME_PL_STOP = 79,
     
     cmbMap,
-    jsonObj = null,
+    jsonObjStage = null,
+    jsonObjSkill,
     isStart = false,
     startDate,
     btnStart,
@@ -62,12 +63,12 @@ var canvas,
     
     LOCAL_ST_KEY = 'BOMBOY';
 
-var Skill = function () {
+var Skill = function (skillName, recastTime, invicibleTime) {
     "use strict";
-    this.player = "urushi";
-    this.skillName = "Mouse Fireworks";
-    this.recastTime = 500;
-    this.invicibleTime = 55;
+    //this.player = "urushi";
+    this.skillName = skillName;
+    this.recastTime = recastTime;
+    this.invicibleTime = invicibleTime;
     
     this.recastCount = -1;
     this.invicibleCount = -1;
@@ -85,7 +86,7 @@ Skill.prototype.init = function () {
     this.isRecasting = false;
 };
 
-var Player = function (x, y, bombs, firePower, speed) {
+var Player = function (x, y, bombs, firePower, speed, name) {
     "use strict";
     
     var PLAYER_WIDTH = 30,
@@ -96,6 +97,7 @@ var Player = function (x, y, bombs, firePower, speed) {
     this.bombs = bombs;
     this.firePower = firePower;
     this.speed = speed;
+    this.name = name;
     
     this.x = x;
     this.y = y;
@@ -235,10 +237,10 @@ function setStage() {
     option_add.text = '-';
     cmbMap.appendChild(option_add);
     
-    for (i = 0; i < jsonObj.stage.length; i += 1) {
+    for (i = 0; i < jsonObjStage.stage.length; i += 1) {
         option_add = document.createElement("option");
-        option_add.value = jsonObj.stage[i].code;
-        option_add.text = jsonObj.stage[i].code;
+        option_add.value = jsonObjStage.stage[i].code;
+        option_add.text = jsonObjStage.stage[i].code;
         cmbMap.appendChild(option_add);
     }
     
@@ -258,8 +260,22 @@ function initStageVariable() {
     
     lblYourBestTime.innerText = 'none';
     lblYourTime.innerText = '00:00:00.00';
-    lblPlayerName.innerText = 'none';
 
+    lblStageStatus.innerText = 'none';
+    lblStageBestTime.innerText = 'none';
+    lblStageNormalTime.innerText = 'none';
+    lblHint.innerText = 'none';
+        
+    lblStageStatus.innerText = 'none';
+    lblStageBestTime.innerText = 'none';
+    lblStageNormalTime.innerText = 'none';
+    lblHint.innerText = 'none';
+    
+    lblSkillName.innerText = 'none';
+    lblPlayerName.innerText = 'none';
+    prgSkill.value = "0";
+    prgSkill.max = "0";
+    
     isMoveUp = false;
     isMoveDown = false;
     isMoveLeft = false;
@@ -285,17 +301,8 @@ function initStageVariable() {
 function init() {
     "use strict";
     clearCanvas();
-    lblStageStatus.innerText = 'none';
-    lblStageBestTime.innerText = 'none';
-    lblStageNormalTime.innerText = 'none';
-    lblHint.innerText = 'none';
-    
-    lblSkillName.innerText = 'none';
-    prgSkill.value = "0";
-    prgSkill.max = "0";
     
     lblGameStatus.innerText = 'Waiting for stage selection';
-        
     cmbMap.options[0].selected = true;
     btnStart.disabled = true;
     
@@ -306,17 +313,55 @@ function init() {
     initStageVariable();
 }
 
-function loadFile() {
+function loadFileSkill() {
     "use strict";
 
-    var requestURL = 'https://masan-k.github.io/bombBoy/stage.json',
+    var requestURL = 'https://masan-k.github.io/bombBoyTest/skill.json',
         request = new XMLHttpRequest();
     request.open('GET', requestURL);
     request.responseType = 'json';
     request.send();
     
     request.onload = function () {
-        jsonObj = request.response;
+        jsonObjSkill = request.response;
+        
+        var key;
+
+        for (key in jsonObjSkill) {
+            if (jsonObjSkill.hasOwnProperty(key)) {
+                if (player.name === key) {
+                    skill = new Skill(jsonObjSkill[key][0].skillName, jsonObjSkill[key][0].recastTime, jsonObjSkill[key][0].invicibleTime);
+                }
+            }
+        }
+        
+        if (skill !== null) {
+            skill.init();
+
+            lblSkillName.innerText = skill.skillName + " : ";
+            prgSkill.max = skill.recastTime;
+            prgSkill.value = skill.recastTime;
+
+        } else {
+            lblSkillName.innerText = 'none';
+            prgSkill.max = "0";
+            prgSkill.value = "0";
+            
+        }
+    };
+}
+
+function loadFileStage() {
+    "use strict";
+
+    var requestURL = 'https://masan-k.github.io/bombBoyTest/stage.json',
+        request = new XMLHttpRequest();
+    request.open('GET', requestURL);
+    request.responseType = 'json';
+    request.send();
+    
+    request.onload = function () {
+        jsonObjStage = request.response;
         setStage();
         init();
     };
@@ -581,7 +626,7 @@ function main() {
         bestTimeDate,
         timeDate;
     
-    if (jsonObj === null) { return false; }
+    if (jsonObjStage === null) { return false; }
     if (MAP_BLOCK === null) { return false; }
     if (gameStatus === 'end') { return false; }
    
@@ -761,7 +806,7 @@ function main() {
 
 function setStageData() {
     'use strict';
-    var y, x, playerX, playerY, i, bomb, speed, firePower;
+    var y, x, playerX, playerY, i, bomb, speed, firePower, playerName;
         
     for (y = 0; y < MAP_BLOCK.length; y += 1) {
         for (x = 0; x < MAP_BLOCK[y].length; x += 1) {
@@ -772,26 +817,21 @@ function setStageData() {
         }
     }
     
-    for (i = 0; i < jsonObj.stage.length; i += 1) {
-        if (jsonObj.stage[i].code === cmbMap.value) {
-            bomb = jsonObj.stage[i].bomb;
-            firePower = jsonObj.stage[i].firePower;
-            speed = jsonObj.stage[i].speed;
+    for (i = 0; i < jsonObjStage.stage.length; i += 1) {
+        if (jsonObjStage.stage[i].code === cmbMap.value) {
+            
+            bomb = jsonObjStage.stage[i].bomb;
+            firePower = jsonObjStage.stage[i].firePower;
+            speed = jsonObjStage.stage[i].speed;
+            playerName = jsonObjStage.stage[i].playerName;
 
-            player = new Player(playerX, playerY, bomb, firePower, speed);
+            player = new Player(playerX, playerY, bomb, firePower, speed, playerName);
                         
             lblStageStatus.innerText = bomb + ',' + firePower + ',' + speed;
-
-            lblStageBestTime.innerText = jsonObj.stage[i].bestTime;
-            lblStageNormalTime.innerText = jsonObj.stage[i].normalTime;
-            lblHint.innerText = jsonObj.stage[i].hint;
-            lblPlayerName.innerText = jsonObj.stage[i].playerName;
-            
-            if (jsonObj.stage[i].playerName !== "none") {
-                skill = new Skill();
-            } else {
-                skill = null;
-            }
+            lblStageBestTime.innerText = jsonObjStage.stage[i].bestTime;
+            lblStageNormalTime.innerText = jsonObjStage.stage[i].normalTime;
+            lblHint.innerText = jsonObjStage.stage[i].hint;
+            lblPlayerName.innerText = playerName;
         }
     }
 }
@@ -800,9 +840,9 @@ function setMapBlock() {
     "use strict";
     var map = null, i, j, k;
            
-    for (i = 0; i < jsonObj.stage.length; i += 1) {
-        if (jsonObj.stage[i].code === cmbMap.value) {
-            map = jsonObj.stage[i].map;
+    for (i = 0; i < jsonObjStage.stage.length; i += 1) {
+        if (jsonObjStage.stage[i].code === cmbMap.value) {
+            map = jsonObjStage.stage[i].map;
         }
     }
 
@@ -841,25 +881,12 @@ function changeStage() {
         
     } else {
         gameStatus = 'selectStage';
-        setStageData();
         initStageVariable();
         
+        setStageData();
+        loadFileSkill();
         setUserTime();
-        
-        if (skill !== null) {
-            skill.init();
-
-            lblSkillName.innerText = skill.skillName + " : ";
-            prgSkill.max = skill.recastTime;
-            prgSkill.value = skill.recastTime;
-
-        } else {
-            lblSkillName.innerText = 'none';
-            prgSkill.max = "0";
-            prgSkill.value = "0";
-            
-        }
-                
+                        
         btnStart.disabled = false;
         btnStart.focus();
         lblGameStatus.innerText = 'Waiting for start';
@@ -1001,7 +1028,7 @@ window.onload = function () {
     btnReset = document.getElementById("btnReset");
     btnReset.addEventListener("click", reset, false);
     
-    loadFile();
+    loadFileStage();
 
     gameStatus = 'init';
     setInterval(main, 16);

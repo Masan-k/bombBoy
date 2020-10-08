@@ -1,0 +1,18 @@
+{
+    "urushi" :
+    [
+        {
+            "skillName" : "Mouse Fireworks",
+            "recastTime" : 500,
+            "invicibleTime" : 55
+      }
+    ],
+    "oren" :
+    [
+        {
+            "skillName" : "Smash Blade",
+            "recastTime" : 250,
+            "invicibleTime" : 50
+        }
+    ]
+}
