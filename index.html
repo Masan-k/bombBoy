@@ -39,7 +39,10 @@
         <div id = "stageNavi">
             <h2>STAGE</h2>
             <p>Select Stage -> <select id="cmbMap"></select></p>
+            <p>Player Name -> <label id="lblPlayerName">none</label></p>
+            
             <p>Status(bombs,fire Power,speed) -> <label id="lblStageStatus">none</label></p>
+            
             <p>Stage Best Time -> <LABEL id="lblStageBestTime"></LABEL></p>
             <p>Stage Normal Time -> <LABEL id="lblStageNormalTime"></LABEL></p>
             <p>Your Best Time -> <LABEL id="lblYourBestTime"></LABEL></p>
@@ -71,6 +74,9 @@
                 <p>Your Time -> <LABEL id="lblYourTime"></LABEL></p>
             </div>
             <canvas id="field" width="770" height="770"></canvas>
+            <div id = 'skillNavi'>
+                <p><LABEL id="lblSkillName"></LABEL><progress id = "prgSkill"></progress>
+            </div>
         </div>
 
     </body>

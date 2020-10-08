@@ -6,6 +6,7 @@
           "bomb" : 3,
           "firePower" : 4,
           "speed" : 5,
+          "playerName" : "none",
           "bestTime" : "00:00:02.xx",
           "normalTime" : "00:00:03.xx",
           "map" : [
@@ -28,6 +29,7 @@
           "bomb" : 3,
           "firePower" : 4,
           "speed" : 5,
+          "playerName" : "none",
           "bestTime" : "00:00:05.xx",
           "normalTime" : "00:00:07.xx",
           "map" : [
@@ -68,7 +70,30 @@
           "bomb" : 2,
           "firePower" : 3,
           "speed" : 7,
+          "playerName" : "none",
           "skill" : "none",
+          "normalTime" : "00:00:18.xx",
+          "bestTime" : "00:00:14.xx",
+          "map" : [
+                "hhhhhghhhhh",
+                "hhhhhshhhhh",
+                "hhhhhshhhhh",
+                "hhhhhshhhhh",
+                "hhhhhshhhhh",
+                "hhhhhshhhhh",
+                "h000000000h",
+                "h000010000h",
+                "h000000000h",
+                "hhhhhhhhhhh"
+          ]
+      },
+      {
+          "code" : "1-3-urushi",
+          "hint" : "key f -> Mouse Fireworks",
+          "bomb" : 2,
+          "firePower" : 3,
+          "speed" : 7,
+          "playerName" : "urushi",
           "normalTime" : "00:00:18.xx",
           "bestTime" : "00:00:14.xx",
           "map" : [
@@ -90,6 +115,7 @@
           "bomb" : 3,
           "firePower" : 4,
           "speed" : 5,
+          "playerName" : "none",
           "normalTime" : "00:00:18.xx",
           "bestTime" : "00:00:11.xx",
           "map" : [

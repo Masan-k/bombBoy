@@ -2,6 +2,7 @@
 var canvas,
     ctx,
     player = null,
+    skill = null,
     BLOCK_SIZE = 70,
     MAP_BLOCK,
     FIRE_UP = '0',
@@ -55,8 +56,37 @@ var canvas,
     lblStageBestTime,
     lblStageNormalTime,
     lblHint,
+    lblSkillName,
+    lblPlayerName,
+    prgSkill,
     
     LOCAL_ST_KEY = 'BOMBOY';
+
+var Skill = function () {
+    "use strict";
+    this.player = "urushi";
+    this.skillName = "Mouse Fireworks";
+    this.recastTime = 500;
+    this.invicibleTime = 55;
+    
+    this.recastCount = -1;
+    this.invicibleCount = -1;
+    this.isValid = null;
+    this.isRecasting = null;
+};
+
+Skill.prototype.init = function () {
+    "use strict";
+    
+    this.recastCount = this.recastTime;
+    this.invicibleCount = 0;
+        
+    lblSkillName.innerText = this.skillName + " : ";
+    prgSkill.max = this.recastTime;
+    prgSkill.value = this.recastTime;
+    this.isValid = true;
+    this.isRecasting = false;
+};
 
 var Player = function (x, y, bombs, firePower, speed) {
     "use strict";
@@ -105,6 +135,11 @@ Player.prototype.draw = function () {
     case '0':
         ctx.fillStyle = 'rgb(234, 182, 156)';
         break;
+            
+    case 'tu1':
+        ctx.fillStyle = 'rgb(0, 0, 0)';
+        break;
+            
     case 'g':
         ctx.fillStyle = 'rgb(255, 255, 0)';
         break;
@@ -143,15 +178,16 @@ Player.prototype.set = function () {
             
             if (player.getMapX() === fireStockPosX[fs] && player.getMapY() === fireStockPosY[fs]) {
                 
-                if (fireStockFirePow[fs] === 0 || fireStockFirePow[fs] === 1) {
-                    status.push('ss');
-                } else {
-                    status.push('ws');
+                if (player.status !== 'tu1') {
+                    if (fireStockFirePow[fs] === 0 || fireStockFirePow[fs] === 1) {
+                        status.push('ss');
+                    } else {
+                        status.push('ws');
+                    }
+                    firePow.push(fireStockFirePow[fs]);
                 }
-                firePow.push(fireStockFirePow[fs]);
             }
         }
-        
         for (r = 0; r < firePow.length; r += 1) {
             
             if (firePow[r] < minFirePow) {
@@ -161,6 +197,26 @@ Player.prototype.set = function () {
         }
         player.status = minStatus;
     }
+    
+    if (player.status === 'tu1') {
+        if (skill.invicibleCount > skill.invicibleTime) {
+            player.status = '0';
+            skill.isRecasting = true;
+            skill.recastCount = 0;
+        } else {
+            skill.invicibleCount += 1;
+        }
+    }
+    
+    if (skill.isRecasting === true && skill.recastCount > skill.recastTime) {
+        skill.isRecasting = false;
+        skill.isValid = true;
+    } else {
+        skill.recastCount += 1;
+    }
+    
+    prgSkill.value = skill.recastCount;
+    
 };
 Player.prototype.getMoveWidth = function () {
     "use strict";
@@ -204,6 +260,10 @@ function initStageVariable() {
     
     lblYourBestTime.innerText = 'none';
     lblYourTime.innerText = '00:00:00.00';
+    
+    lblPlayerName.innerText = 'none';
+    lblSkillName.innerText = 'none';
+
 
     isMoveUp = false;
     isMoveDown = false;
@@ -235,6 +295,10 @@ function init() {
     lblStageNormalTime.innerText = 'none';
     lblHint.innerText = 'none';
     
+    lblSkillName.innerText = 'none';
+    prgSkill.value = "0";
+    prgSkill.max = "0";
+    
     lblGameStatus.innerText = 'Waiting for stage selection';
         
     cmbMap.options[0].selected = true;
@@ -242,6 +306,7 @@ function init() {
     
     MAP_BLOCK = null;
     player = null;
+    skill = null;
     
     initStageVariable();
 }
@@ -719,11 +784,17 @@ function setStageData() {
             speed = jsonObj.stage[i].speed;
 
             player = new Player(playerX, playerY, bomb, firePower, speed);
+                        
             lblStageStatus.innerText = bomb + ',' + firePower + ',' + speed;
 
             lblStageBestTime.innerText = jsonObj.stage[i].bestTime;
             lblStageNormalTime.innerText = jsonObj.stage[i].normalTime;
             lblHint.innerText = jsonObj.stage[i].hint;
+            lblPlayerName.innerText = jsonObj.stage[i].playerName;
+            
+            if (jsonObj.stage[i].playerName !== "none") {
+                skill = new Skill();
+            }
         }
     }
 }
@@ -777,6 +848,7 @@ function changeStage() {
         initStageVariable();
         
         setUserTime();
+        if (skill !== null) { skill.init(); }
         
         btnStart.disabled = false;
         btnStart.focus();
@@ -848,12 +920,18 @@ function inputKeyDown() {
     var KEY_CODE_SPACE = 32,
         KEY_CODE_F5 = 116,
         KEY_CODE_S = 83,
-        KEY_CODE_R = 82;
+        KEY_CODE_R = 82,
+        KEY_CODE_F = 70;
     
     if (event.keyCode === KEY_CODE_S && btnStart.disabled === false) { clickStart(); }
     if (event.keyCode === KEY_CODE_R && btnReset.disabled === false) { reset(); }
     
     if (gameStatus !== 'run') { return false; }
+    
+    if (player.status === 'tu1') { 
+        event.preventDefault();
+        return false; 
+    }
         
     if (event.keyCode === KEY_CODE_LEFT) {
         isMoveLeft = true;
@@ -876,6 +954,12 @@ function inputKeyDown() {
         event.preventDefault();
     }
     if (event.keyCode !== KEY_CODE_F5) {event.preventDefault(); } // scroll off
+    
+    if (event.keyCode === KEY_CODE_F && player.status === '0' && skill.isValid === true) {
+        player.status = 'tu1';
+        skill.isValid = false;
+        skill.invicibleCount = 0;
+    }
 }
 
 
@@ -894,18 +978,19 @@ window.onload = function () {
     lblStageBestTime = document.getElementById("lblStageBestTime");
     lblStageNormalTime = document.getElementById("lblStageNormalTime");
     lblHint = document.getElementById("lblHint");
-    
+    lblGameStatus = document.getElementById("lblGameStatus");
+    lblYourBestTime = document.getElementById("lblYourBestTime");
+    lblYourTime = document.getElementById("lblYourTime");
+    lblSkillName = document.getElementById("lblSkillName");
+    lblPlayerName = document.getElementById("lblPlayerName");
+    prgSkill = document.getElementById("prgSkill");
+        
     btnStart = document.getElementById("btnStart");
     btnStart.addEventListener("click", clickStart, false);
     
     btnReset = document.getElementById("btnReset");
     btnReset.addEventListener("click", reset, false);
     
-    lblGameStatus = document.getElementById("lblGameStatus");
-    
-    lblYourBestTime = document.getElementById("lblYourBestTime");
-    lblYourTime = document.getElementById("lblYourTime");
-
     loadFile();
 
     gameStatus = 'init';

@@ -148,32 +148,54 @@ B BOM MOVE ok 2020/09/30
           1 FRAME = BLOCK_SIZE / 2 / 29
 
 A RANGE EROOR ok 2020/10/01
-
 B TIME ADMIN ok 2020/10/04
-
-B STATUS
+B STATUS ok 2020/10/05
   INIT -> MAP SHOW -> GAME START -> END
-             
-B TIME SAVE 
+B TIME SAVE ok 2020/10/05
   LOCALSTRAGE ok 2020/10/05
     STAGECODE,TIME
   BEST TIME UPDATE ... ok 2020/10/05
   
-
-BUG
-BUG FIX BOMB DISAPPEARS 
-OK 2020/10/05
-
-CURRENT FIX SPECIFICATIONS
-OK 2020/10/05
+BUG FIX BOMB DISAPPEARS OK 2020/10/05
+BUG FIX CURRENT SPECIFICATIONS OK 2020/10/05
 
 MAP LOOP(SHOW H,G,S,0) 
 -> BOM LOOP(SET FIRE AND F->MAP) 
 -> FIRE LOOP(F -> MAP,FIRE CLEAR)
 -> BOM LOOP
 
+B ATTACKER SKILL ok 2020/10/08
+origin :0.3sec
+x0.3/1/60 = 18frame 
+
+ x /(1/60) = 70frame 
+ x = 60 * 1 / 60 = 1.16666666
+
+60fps -> 60frame
+62.5 fps -> 62frame
+
+invincibleTime 55 or 60
+-> 55 
+recast start 55Å`
+
+0.3/1/62.5 = 18.75 = 19frameÅ@x movie = 
+
+origin:8.0sec
+8.0/1/60=480frame
+8.0/1/62.5=500frame
+
+Class Skill
+- Name:Mouse Fireworks
+- recastTime:8sec:500frame
+- invincibleTime:0.3sec:19frame
+- recastCount
+- invincibleCount
+- isValid
+------------
++ init()
+
+
 # NEXT
-B ATTACKER SKILL
 B CPU BATTLE
 C NEW CHARACTER
 C BLOCKER SKILL
