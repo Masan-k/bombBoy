@@ -316,7 +316,7 @@ function init() {
 function loadFileSkill() {
     "use strict";
 
-    var requestURL = 'https://masan-k.github.io/bombBoyTest/skill.json',
+    var requestURL = 'https://masan-k.github.io/bombBoy/skill.json',
         request = new XMLHttpRequest();
     request.open('GET', requestURL);
     request.responseType = 'json';
@@ -354,7 +354,7 @@ function loadFileSkill() {
 function loadFileStage() {
     "use strict";
 
-    var requestURL = 'https://masan-k.github.io/bombBoyTest/stage.json',
+    var requestURL = 'https://masan-k.github.io/bombBoy/stage.json',
         request = new XMLHttpRequest();
     request.open('GET', requestURL);
     request.responseType = 'json';
