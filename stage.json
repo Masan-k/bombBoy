@@ -49,6 +49,7 @@
           "bomb" : 3,
           "firePower" : 4,
           "speed" : 5,
+          "playerName" : "none",
           "normalTime" : "00:00:18.xx",
           "bestTime" : "00:00:11.xx",
           "map" : [

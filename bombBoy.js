@@ -80,10 +80,7 @@ Skill.prototype.init = function () {
     
     this.recastCount = this.recastTime;
     this.invicibleCount = 0;
-        
-    lblSkillName.innerText = this.skillName + " : ";
-    prgSkill.max = this.recastTime;
-    prgSkill.value = this.recastTime;
+            
     this.isValid = true;
     this.isRecasting = false;
 };
@@ -198,6 +195,7 @@ Player.prototype.set = function () {
         player.status = minStatus;
     }
     
+    if (skill === null) { return false; }
     if (player.status === 'tu1') {
         if (skill.invicibleCount > skill.invicibleTime) {
             player.status = '0';
@@ -260,10 +258,7 @@ function initStageVariable() {
     
     lblYourBestTime.innerText = 'none';
     lblYourTime.innerText = '00:00:00.00';
-    
     lblPlayerName.innerText = 'none';
-    lblSkillName.innerText = 'none';
-
 
     isMoveUp = false;
     isMoveDown = false;
@@ -794,6 +789,8 @@ function setStageData() {
             
             if (jsonObj.stage[i].playerName !== "none") {
                 skill = new Skill();
+            } else {
+                skill = null;
             }
         }
     }
@@ -848,8 +845,21 @@ function changeStage() {
         initStageVariable();
         
         setUserTime();
-        if (skill !== null) { skill.init(); }
         
+        if (skill !== null) {
+            skill.init();
+
+            lblSkillName.innerText = skill.skillName + " : ";
+            prgSkill.max = skill.recastTime;
+            prgSkill.value = skill.recastTime;
+
+        } else {
+            lblSkillName.innerText = 'none';
+            prgSkill.max = "0";
+            prgSkill.value = "0";
+            
+        }
+                
         btnStart.disabled = false;
         btnStart.focus();
         lblGameStatus.innerText = 'Waiting for start';
@@ -928,9 +938,9 @@ function inputKeyDown() {
     
     if (gameStatus !== 'run') { return false; }
     
-    if (player.status === 'tu1') { 
+    if (player.status === 'tu1') {
         event.preventDefault();
-        return false; 
+        return false;
     }
         
     if (event.keyCode === KEY_CODE_LEFT) {
