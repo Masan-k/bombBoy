@@ -550,7 +550,7 @@ function setFireStock(y, x, fireMode, bomNum, isStopFire, fireNum) {
     if (MAP_BLOCK[y][x] === 'h' || MAP_BLOCK[y][x] === 's' || MAP_BLOCK[y][x] === 'g' || MAP_BLOCK[y][x] === 'sfd' || MAP_BLOCK[y][x] === 'sfu' || MAP_BLOCK[y][x] === 'sfl' || MAP_BLOCK[y][x] === 'sfr') {
 
         if ((MAP_BLOCK[y][x] === 's' || MAP_BLOCK[y][x] === 'sfd' || MAP_BLOCK[y][x] === 'sfu' || MAP_BLOCK[y][x] === 'sfl' || MAP_BLOCK[y][x] === 'sfr') && isStopFire === false) {
-            fireStockExpTime.push(baseCount + fireNum * 4);
+            fireStockExpTime.push(baseCount + fireNum);
             fireStockPosX.push(x);
             fireStockPosY.push(y);
             fireStockFirePow.push(fireNum);
@@ -581,7 +581,7 @@ function setFireStock(y, x, fireMode, bomNum, isStopFire, fireNum) {
         }
         
     } else if (isStopFire === false) {
-        fireStockExpTime.push(baseCount + fireNum * 4);
+        fireStockExpTime.push(baseCount + fireNum);
         fireStockPosX.push(x);
         fireStockPosY.push(y);
         fireStockFirePow.push(fireNum);
@@ -1032,6 +1032,5 @@ window.onload = function () {
 
     gameStatus = 'init';
     setInterval(main, 16);
-    //setInterval(main, 100);
     
 };
