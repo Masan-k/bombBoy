@@ -6,6 +6,12 @@ Original "Bombergirl"
 https://p.eagate.573.jp/game/bombergirl/bg/p/index.html
 
 
+momoka-----------
+Thank you
+-----------------
+
+
+
 --
 ボム　ボーイ
 
